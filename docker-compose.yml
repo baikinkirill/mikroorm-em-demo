@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16.1
+    restart: always
+    user: root
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=demo
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          memory: 3GB
+
+volumes:
+  db:
+    driver: local
