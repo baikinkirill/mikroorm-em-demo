@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { EntityManager, EntityRepository } from '@mikro-orm/postgresql';
-import { ENTITIES_COUNT } from './app.constants';
 import pMap from 'p-map';
 import { TestEntity } from './entities/test.entity';
 import { TestRepository } from './repositories/test.repository';
@@ -23,7 +22,6 @@ export class AppService {
     await pMap(
       ids,
       async (id: number) => {
-        this.#em.clear();
         await this.#em.transactional(async (em) => {
           em.clear();
 
