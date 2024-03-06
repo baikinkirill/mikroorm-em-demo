@@ -17,9 +17,4 @@ export class AppController {
   ) {
     await this.appService.updateEntities(ids);
   }
-
-  @Get('upsert-entities')
-  async upsertEntities() {
-    await this.appService.upsertEntities();
-  }
 }

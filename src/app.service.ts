@@ -23,13 +23,14 @@ export class AppService {
     await pMap(
       ids,
       async (id: number) => {
+        this.#em.clear();
         await this.#em.transactional(async (em) => {
           em.clear();
 
           await this.#updateEntity(id);
         });
       },
-      { concurrency: 5 },
+      { concurrency: 3 },
     );
   }
 
@@ -41,22 +42,5 @@ export class AppService {
     testEntity.text = randomText;
 
     await this.#em.persistAndFlush(testEntity);
-  }
-
-  async upsertEntities() {
-    const entities = await this.#testRepository.findAll();
-
-    if (entities.length >= ENTITIES_COUNT) {
-      return entities;
-    }
-
-    const newEntities = [];
-    for (let i = entities.length; i < ENTITIES_COUNT; i++) {
-      newEntities.push(this.#testRepository.create({ text: 'test' }));
-    }
-
-    await this.#em.persistAndFlush(newEntities);
-
-    return { ...entities, ...newEntities };
   }
 }
